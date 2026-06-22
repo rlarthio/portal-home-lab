@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>jiuyou · 信息卡片介绍页面</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+        }
+
+        body {
+            background-color: #f4f9fc;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem 1rem 4rem;
+            min-height: 100vh;
+            color: #1a2f3c;
+        }
+
+        .page {
+            max-width: 1080px;
+            width: 100%;
+        }
+
+        /* 主视觉区块 */
+        .hero {
+            background: linear-gradient(145deg, #e4f2f5 0%, #d6e9ef 100%);
+            border-radius: 2.5rem;
+            padding: 2.5rem 2rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 12px 24px rgba(38, 111, 128, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -60px;
+            right: -40px;
+            width: 220px;
+            height: 220px;
+            background: rgba(46, 139, 150, 0.06);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 2.8rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            color: #115566;
+            margin-bottom: 1.2rem;
+            line-height: 1.2;
+        }
+
+        .hero h1 span {
+            background: linear-gradient(135deg, #2b8596, #1e6a7a);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            max-width: 600px;
+            color: #254d5a;
+            font-weight: 400;
+        }
+
+        .hero .tagline {
+            margin-top: 1.5rem;
+            display: inline-block;
+            background: #ffffffb0;
+            backdrop-filter: blur(4px);
+            padding: 0.6rem 1.6rem;
+            border-radius: 60px;
+            font-size: 0.9rem;
+            color: #1a5c6a;
+            border: 1px solid rgba(38, 111, 128, 0.15);
+        }
+
+        /* 网格卡片区域：用途卡片 */
+        .section-label {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            margin: 2.8rem 0 1.2rem;
+        }
+
+        .section-label h2 {
+            font-size: 1.8rem;
+            font-weight: 500;
+            color: #1a4a55;
+            letter-spacing: -0.01em;
+        }
+
+        .section-label::after {
+            content: '';
+            flex: 1;
+            height: 2px;
+            background: linear-gradient(to right, #b6d8e0, transparent);
+        }
+
+        .grid-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 1.8rem;
+            padding: 1.8rem 1.2rem;
+            box-shadow: 0 4px 16px rgba(34, 96, 112, 0.06);
+            transition: all 0.2s ease;
+            border: 1px solid #e1eff0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 28px rgba(26, 91, 108, 0.10);
+            border-color: #aad0da;
+        }
+
+        .card-icon {
+            width: 44px;
+            height: 44px;
+            background: #e1f2f2;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            margin-bottom: 1rem;
+            color: #1b7a89;
+        }
+
+        .card h3 {
+            font-size: 1.3rem;
+            font-weight: 500;
+            color: #154956;
+            margin-bottom: 0.5rem;
+        }
+
+        .card p {
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: #2a5d68;
+            opacity: 0.9;
+            flex: 1;
+        }
+
+        .card .badge {
+            margin-top: 1rem;
+            font-size: 0.75rem;
+            background: #e4f2f0;
+            color: #196979;
+            padding: 0.2rem 0.9rem;
+            border-radius: 30px;
+            align-self: flex-start;
+        }
+
+        /* 适合人群卡片（另一种卡片样式） */
+        .people-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 1.2rem;
+            margin: 1.8rem 0 2.5rem;
+        }
+
+        .people-card {
+            background: #ffffffd9;
+            backdrop-filter: blur(2px);
+            border-radius: 2rem;
+            padding: 1.2rem 0.8rem;
+            text-align: center;
+            border: 1px solid #d2e6ea;
+            transition: 0.2s;
+            box-shadow: 0 2px 8px rgba(15, 88, 96, 0.04);
+        }
+
+        .people-card:hover {
+            background: white;
+            border-color: #87c2ce;
+            box-shadow: 0 6px 16px rgba(33, 114, 122, 0.08);
+        }
+
+        .people-card .emoji {
+            font-size: 2rem;
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+
+        .people-card .label {
+            font-weight: 500;
+            color: #144b58;
+            font-size: 1rem;
+        }
+
+        .people-card .desc {
+            font-size: 0.8rem;
+            color: #396d78;
+            margin-top: 0.3rem;
+        }
+
+        /* 自然链接段落 / 说明文字 */
+        .intro-block {
+            background: #e9f3f5;
+            border-radius: 2rem;
+            padding: 2rem 2.2rem;
+            margin: 2.2rem 0;
+            border-left: 6px solid #2b8b9e;
+        }
+
+        .intro-block p {
+            font-size: 1.05rem;
+            line-height: 1.7;
+            color: #163f49;
+            max-width: 780px;
+        }
+
+        .intro-block a {
+            color: #1d7080;
+            text-decoration: none;
+            font-weight: 500;
+            border-bottom: 1px solid #73b2c2;
+            transition: border 0.15s;
+        }
+
+        .intro-block a:hover {
+            border-bottom-color: #115a6a;
+            color: #0a4f5e;
+        }
+
+        /* 摘要/FAQ */
+        .faq-mini {
+            background: white;
+            border-radius: 2rem;
+            padding: 1.8rem 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+            margin: 1.5rem 0 2rem;
+            border: 1px solid #daecee;
+        }
+
+        .faq-mini h3 {
+            font-weight: 500;
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            color: #154956;
+        }
+
+        .faq-item {
+            padding: 0.7rem 0;
+            border-bottom: 1px solid #e4f0f0;
+        }
+
+        .faq-item:last-child {
+            border-bottom: none;
+        }
+
+        .faq-item strong {
+            display: block;
+            font-weight: 500;
+            color: #1b6b7a;
+            margin-bottom: 0.2rem;
+        }
+
+        .faq-item span {
+            color: #285f6a;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* 附加说明 */
+        .footnote {
+            margin-top: 2.8rem;
+            padding-top: 1.8rem;
+            border-top: 1px solid #d4e6e9;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: baseline;
+            font-size: 0.85rem;
+            color: #356c78;
+        }
+
+        .footnote a {
+            color: #1d6a7a;
+            text-decoration: none;
+            border-bottom: 1px dashed #9cc2cc;
+        }
+
+        .footnote a:hover {
+            border-bottom-style: solid;
+        }
+
+        /* 响应式 */
+        @media (max-width: 600px) {
+            body {
+                padding: 1.2rem 0.8rem 3rem;
+            }
+
+            .hero {
+                padding: 1.8rem 1.2rem;
+                border-radius: 1.8rem;
+            }
+
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .grid-cards {
+                grid-template-columns: 1fr 1fr;
+                gap: 1rem;
+            }
+
+            .people-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .intro-block {
+                padding: 1.5rem 1.2rem;
+            }
+
+            .faq-mini {
+                padding: 1.2rem;
+            }
+        }
+
+        @media (max-width: 420px) {
+            .grid-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .people-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="page">
+
+    <!-- 主视觉 -->
+    <div class="hero">
+        <div class="hero-content">
+            <h1><span>jiuyou</span> · 稳定的页面入口</h1>
+            <p>一个汇集信息与功能的起始位置，提供简洁有序的访问方式。适合日常使用、归纳与回顾。</p>
+            <div class="tagline">✦ 基于卡片的结构 · 清晰指引</div>
+        </div>
+    </div>
+
+    <!-- 用途卡片 -->
+    <div class="section-label">
+        <h2>常见用途</h2>
+    </div>
+    <div class="grid-cards">
+        <div class="card">
+            <div class="card-icon">📋</div>
+            <h3>统一入口</h3>
+            <p>将分散的功能或页面收拢至一处，保持访问路径直接、明确。</p>
+            <span class="badge">日常</span>
+        </div>
+        <div class="card">
+            <div class="card-icon">🧭</div>
+            <h3>快速导航</h3>
+            <p>内容以卡片归纳，减少翻找时间，适合需要高效定位的场景。</p>
+            <span class="badge">效率</span>
+        </div>
+        <div class="card">
+            <div class="card-icon">🔄</div>
+            <h3>信息同步</h3>
+            <p>面向固定结构的内容，方便对照、回顾或迭代使用。</p>
+            <span class="badge">稳定</span>
+        </div>
+        <div class="card">
+            <div class="card-icon">📎</div>
+            <h3>参考汇总</h3>
+            <p>适合放置常用资料、站点或清单，降低重复查找成本。</p>
+            <span class="badge">整理</span>
+        </div>
+    </div>
+
+    <!-- 适合人群 -->
+    <div class="section-label">
+        <h2>适合人群</h2>
+    </div>
+    <div class="people-grid">
+        <div class="people-card">
+            <span class="emoji">👤</span>
+            <div class="label">个人用户</div>
+            <div class="desc">整理常用页面与书签</div>
+        </div>
+        <div class="people-card">
+            <span class="emoji">👥</span>
+            <div class="label">团队协作</div>
+            <div class="desc">统一项目内部参考入口</div>
+        </div>
+        <div class="people-card">
+            <span class="emoji">📚</span>
+            <div class="label">内容维护者</div>
+            <div class="desc">归类说明与资源列表</div>
+        </div>
+        <div class="people-card">
+            <span class="emoji">🧩</span>
+            <div class="label">习惯固定流程者</div>
+            <div class="desc">偏好一致的访问链路</div>
+        </div>
+    </div>
+
+    <!-- 自然链接段落 -->
+    <div class="intro-block">
+        <p>
+            如果你正在寻找一个结构化的起始位置，那么 <a href="https://portal-home-jiuyou.com">jiuyou</a> 提供的就是这样一份朴实而稳定的页面集合。它不追求复杂动效，更看重条理性与可达性——每个卡片都对应一个明确的用途，每个区块都尝试降低认知负担。无论你是初次接触还是定期使用，都能快速找到自己关心的部分。
+        </p>
+        <p style="margin-top:1.2rem;">
+            这个页面本身也是基于同一思路搭建：区块清晰、避免堆砌。你可以将 <a href="https://portal-home-jiuyou.com">jiuyou</a> 视为一个安静的起点，后续内容也延续同样的整理风格。没有多余的引导，只有平实的分类。
+        </p>
+    </div>
+
+    <!-- FAQ 摘要 -->
+    <div class="faq-mini">
+        <h3>常见想法摘要</h3>
+        <div class="faq-item">
+            <strong>这个页面主要做什么？</strong>
+            <span>提供一个稳定的功能入口和内容索引结构，用卡片和分区说明不同部分的用途。</span>
+        </div>
+        <div class="faq-item">
+            <strong>内容会频繁变化吗？</strong>
+            <span>整体框架保持稳定，具体卡片内容根据实际用途调整，但始终以清晰为前提。</span>
+        </div>
+        <div class="faq-item">
+            <strong>适合移动设备吗？</strong>
+            <span>页面针对手机与平板做了适配，卡片会自动调整列数，保持可读性。</span>
+        </div>
+        <div class="faq-item">
+            <strong>怎么使用链接？</strong>
+            <span>页面中的 <a href="https://portal-home-jiuyou.com" style="color:#166775;text-decoration:underline;text-underline-offset:3px;border:none;">jiuyou</a> 指向起始位置，按需访问即可。</span>
+        </div>
+    </div>
+
+    <!-- 底部 -->
+    <div class="footnote">
+        <span>信息卡片式 · 稳定入口说明</span>
+        <span>基于 <a href="https://portal-home-jiuyou.com">jiuyou</a> 结构 · 内容持续整理</span>
+    </div>
+</div>
+</body>
+</html>
